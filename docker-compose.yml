@@ -1,0 +1,16 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: ggumu-mysql
+    environment:
+      MYSQL_DATABASE: ggumu
+      MYSQL_USER: ggumu
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ggumu-mysql-data:/var/lib/mysql
+
+volumes:
+  ggumu-mysql-data:
