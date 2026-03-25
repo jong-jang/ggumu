@@ -1,4 +1,4 @@
-package com.ggumu.server.common.response;
+package com.jjh.ggumu.common.response;
 
 import lombok.Getter;
 

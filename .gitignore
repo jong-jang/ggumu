@@ -39,3 +39,6 @@ out/
 ### Sensitive configs ###
 .env
 application-local.yml
+
+### Claude Code ###
+CLAUDE.md

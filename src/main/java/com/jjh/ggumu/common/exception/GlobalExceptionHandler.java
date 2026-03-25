@@ -1,6 +1,6 @@
-package com.ggumu.server.common.exception;
+package com.jjh.ggumu.common.exception;
 
-import com.ggumu.server.common.response.ApiResponse;
+import com.jjh.ggumu.common.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
