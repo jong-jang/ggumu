@@ -15,8 +15,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     private final UserRepository userRepository;
-    private final ObjectMapper objectMapper;
 
     public UserResponse getMe(UUID userId) {
         User user = userRepository.findById(userId)
