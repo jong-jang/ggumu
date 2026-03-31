@@ -5,6 +5,7 @@ import com.jjh.ggumu.domain.routine.dto.RoutineCreateRequest;
 import com.jjh.ggumu.domain.routine.dto.RoutineItemResponse;
 import com.jjh.ggumu.domain.routine.dto.RoutineResponse;
 import com.jjh.ggumu.domain.routine.dto.RoutineUpdateRequest;
+import com.jjh.ggumu.domain.follow.service.FollowService;
 import com.jjh.ggumu.domain.routine.service.RoutineService;
 import com.jjh.ggumu.global.security.SecurityConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,6 +64,9 @@ class RoutineControllerTest {
 
     @MockitoBean
     private RoutineService routineService;
+
+    @MockitoBean
+    private FollowService followService;
 
     private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 

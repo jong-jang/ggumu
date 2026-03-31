@@ -1,6 +1,7 @@
 package com.jjh.ggumu.domain.routine.controller;
 
 import com.jjh.ggumu.common.response.ApiResponse;
+import com.jjh.ggumu.domain.follow.service.FollowService;
 import com.jjh.ggumu.domain.routine.dto.*;
 import com.jjh.ggumu.domain.routine.service.RoutineService;
 import jakarta.validation.Valid;
@@ -18,12 +19,19 @@ import java.util.UUID;
 public class RoutineController {
 
     private final RoutineService routineService;
+    private final FollowService followService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<RoutineResponse>> create(
             @AuthenticationPrincipal String userId,
             @Valid @RequestBody RoutineCreateRequest request) {
         return ResponseEntity.ok(ApiResponse.ok(routineService.create(UUID.fromString(userId), request)));
+    }
+
+    @GetMapping("/feed")
+    public ResponseEntity<ApiResponse<List<RoutineResponse>>> getFeed(
+            @AuthenticationPrincipal String userId) {
+        return ResponseEntity.ok(ApiResponse.ok(followService.getFeed(UUID.fromString(userId))));
     }
 
     @GetMapping("/me")
