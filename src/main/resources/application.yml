@@ -56,3 +56,6 @@ aws:
 
 oauth2:
   redirect-url: ${OAUTH2_REDIRECT_URL:http://localhost:3000/oauth2/callback}
+
+claude:
+  api-key: ${CLAUDE_API_KEY:}
