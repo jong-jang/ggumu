@@ -1,6 +1,9 @@
 package com.jjh.ggumu.domain.routine.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jjh.ggumu.domain.like.service.LikeService;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import com.jjh.ggumu.domain.routine.dto.RoutineCreateRequest;
 import com.jjh.ggumu.domain.routine.dto.RoutineItemResponse;
 import com.jjh.ggumu.domain.routine.dto.RoutineResponse;
@@ -67,6 +70,9 @@ class RoutineControllerTest {
 
     @MockitoBean
     private FollowService followService;
+
+    @MockitoBean
+    private LikeService likeService;
 
     private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
@@ -165,6 +171,36 @@ class RoutineControllerTest {
                         .with(authentication(auth())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").doesNotExist());
+    }
+
+    @Test
+    void POST_좋아요_성공() throws Exception {
+        UUID routineId = sampleResponse.id();
+
+        mockMvc.perform(post("/api/routines/{routineId}/like", routineId)
+                        .with(authentication(auth())))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void DELETE_좋아요취소_성공() throws Exception {
+        UUID routineId = sampleResponse.id();
+
+        mockMvc.perform(delete("/api/routines/{routineId}/like", routineId)
+                        .with(authentication(auth())))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void GET_랭킹조회_성공() throws Exception {
+        given(likeService.getRanking(any())).willReturn(
+                new PageImpl<>(List.of(sampleResponse), PageRequest.of(0, 20), 1)
+        );
+
+        mockMvc.perform(get("/api/routines/ranking")
+                        .with(authentication(auth())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.content[0].title").value("아침 루틴"));
     }
 
     @Test

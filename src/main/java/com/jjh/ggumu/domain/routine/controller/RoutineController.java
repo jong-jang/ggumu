@@ -2,6 +2,7 @@ package com.jjh.ggumu.domain.routine.controller;
 
 import com.jjh.ggumu.common.response.ApiResponse;
 import com.jjh.ggumu.domain.follow.service.FollowService;
+import com.jjh.ggumu.domain.like.service.LikeService;
 import com.jjh.ggumu.domain.routine.dto.*;
 import com.jjh.ggumu.domain.routine.service.RoutineService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,6 +10,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +29,7 @@ public class RoutineController {
 
     private final RoutineService routineService;
     private final FollowService followService;
+    private final LikeService likeService;
 
     @Operation(summary = "루틴 생성")
     @PostMapping
@@ -70,5 +75,30 @@ public class RoutineController {
             @PathVariable UUID routineId) {
         routineService.delete(UUID.fromString(userId), routineId);
         return ResponseEntity.ok(ApiResponse.ok());
+    }
+
+    @Operation(summary = "루틴 좋아요")
+    @PostMapping("/{routineId}/like")
+    public ResponseEntity<ApiResponse<Void>> like(
+            @AuthenticationPrincipal String userId,
+            @PathVariable UUID routineId) {
+        likeService.like(UUID.fromString(userId), routineId);
+        return ResponseEntity.ok(ApiResponse.ok());
+    }
+
+    @Operation(summary = "루틴 좋아요 취소")
+    @DeleteMapping("/{routineId}/like")
+    public ResponseEntity<ApiResponse<Void>> unlike(
+            @AuthenticationPrincipal String userId,
+            @PathVariable UUID routineId) {
+        likeService.unlike(UUID.fromString(userId), routineId);
+        return ResponseEntity.ok(ApiResponse.ok());
+    }
+
+    @Operation(summary = "랭킹 조회", description = "좋아요 + 조회수 기준 공개 루틴 랭킹 (페이징)")
+    @GetMapping("/ranking")
+    public ResponseEntity<ApiResponse<Page<RoutineResponse>>> getRanking(
+            @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.ok(likeService.getRanking(pageable)));
     }
 }
