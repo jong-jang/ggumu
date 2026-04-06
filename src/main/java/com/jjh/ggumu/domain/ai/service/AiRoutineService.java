@@ -48,11 +48,11 @@ public class AiRoutineService {
     }
 
     String callClaudeApi(String prompt) {
-        Map<String, Object> requestBody = Map.of(
-                "model", CLAUDE_MODEL,
-                "max_tokens", 512,
-                "messages", List.of(Map.of("role", "user", "content", prompt))
-        );
+        Map<String, Object> requestBody = new java.util.LinkedHashMap<>();
+        requestBody.put("model", CLAUDE_MODEL);
+        requestBody.put("max_tokens", 512);
+        requestBody.put("system", "당신은 건강한 생활 습관을 돕는 루틴 추천 전문가입니다. 사용자 요청에 따라 루틴을 JSON 배열 형식으로만 반환하세요.");
+        requestBody.put("messages", List.of(Map.of("role", "user", "content", prompt)));
 
         return restClient.post()
                 .uri(CLAUDE_API_URL)
