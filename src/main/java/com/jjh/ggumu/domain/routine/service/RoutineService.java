@@ -25,10 +25,10 @@ public class RoutineService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        Routine routine = Routine.create(user, request.title(), request.description(), request.isPublic());
+        Routine routine = Routine.create(user, request.title(), request.description(), Boolean.TRUE.equals(request.isPublic()));
 
         for (int i = 0; i < request.items().size(); i++) {
-            RoutineItem item = RoutineItem.create(routine, request.items().get(i), i + 1);
+            RoutineItem item = RoutineItem.create(routine, request.items().get(i).title(), i + 1);
             routine.getItems().add(item);
         }
 
@@ -55,7 +55,7 @@ public class RoutineService {
             throw new IllegalArgumentException("수정 권한이 없습니다.");
         }
 
-        routine.update(request.title(), request.description(), request.isPublic());
+        routine.update(request.title(), request.description(), Boolean.TRUE.equals(request.isPublic()));
         return RoutineResponse.from(routine);
     }
 
