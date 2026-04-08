@@ -7,6 +7,6 @@ import java.util.List;
 public record RoutineCreateRequest(
         @NotBlank String title,
         String description,
-        boolean isPublic,
-        List<String> items
+        Boolean isPublic,
+        List<RoutineItemRequest> items
 ) {}
